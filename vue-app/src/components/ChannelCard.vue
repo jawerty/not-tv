@@ -46,7 +46,7 @@ export default {
   data() {
     return {
       imageNum: Math.floor(Math.random() * 100) + 1,
-      watcherCountFormatted: numeral(this.watcherCount).format('0a');
+      watcherCountFormatted: numeral(this.watcherCount).format('0a')
     }
   }
 }
