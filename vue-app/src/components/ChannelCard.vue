@@ -15,7 +15,7 @@
         <b-icon-circle-fill></b-icon-circle-fill>
         {{ watcherCountFormatted }}
       </b-card-text>
-      <b-badge v-for="tag in tags">{{ tag }}</b-badge>
+      <b-badge v-for="(tag, i) in tags" :key="i">{{ tag }}</b-badge>
     </b-card>
   </div>
 </template>
