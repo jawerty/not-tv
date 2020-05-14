@@ -80,7 +80,7 @@ function getChannelVideos(searchTerms) {
 		let youtubeLinks = await videoFetcher.getYoutubeLinks(1);
 		console.log("-- Video links successfully gathered --");
 
-		const chunkedYoutubeLinks = chunkArray(youtubeLinks, 10);
+		const chunkedYoutubeLinks = chunkArray(youtubeLinks, 25);
 
 		let channelVideos = [];
 		let youtubeLinksChunk;
