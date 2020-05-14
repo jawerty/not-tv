@@ -2,7 +2,7 @@
   <div class="channel-card">
     <b-card
       :title="name"
-      img-src="https://picsum.photos/600/300/?image={{imageNum}}"
+      :img-src="`https://picsum.photos/600/300/?image={{imageNum}})`"
       img-alt="Image"
       img-top
       tag="article"
