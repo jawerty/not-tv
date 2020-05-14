@@ -1,0 +1,3 @@
+node bootstrap-db.js;
+node create-channel.js "UFC" "Conor Mcgregor,ufc,mma,dana white,bjj,sparring,muay thai,train,strong"
+node fetch-channel-videos.js 1
