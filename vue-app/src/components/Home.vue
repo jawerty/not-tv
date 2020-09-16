@@ -1,22 +1,18 @@
 <template>
   <div class="home">
-    <Header />
-    <div class="content">
+    <div class="content p-3">
       <ChannelList :channels="channels" />
     </div>
-    <Footer />
   </div>
 </template>
 
 <script>
-import Header from './Header';
-import Footer from './Footer';
 import ChannelList from './ChannelList';
 // import CreateChannel from './CreateChannel';
 // import TopChannel from './TopChannel';
 
 export default {
-  components: { Header, Footer, ChannelList },
+  components: { ChannelList },
   name: 'Home',
   props: {
   },
@@ -29,4 +25,6 @@ export default {
 </script>
 
 <style scoped>
+.content {
+}
 </style>

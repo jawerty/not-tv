@@ -1,33 +1,43 @@
 <template>
   <div class="channel-card">
-    <b-card
-      :title="name"
-      :img-src="`https://picsum.photos/600/300/?image={{imageNum}})`"
-      img-alt="Image"
-      img-top
-      tag="article"
-      class="mb-2"
+    <router-link
+      class="router-link"
+      :to="{ 
+        name: 'WatchChannel', 
+        params: { channelId }
+      }"
     >
-      <b-card-text class="">
-        Now playing "{{ currentVideoName }}"
-      </b-card-text>
-      <b-card-text class="">
-        <b-icon-circle-fill></b-icon-circle-fill>
-        {{ watcherCountFormatted }}
-      </b-card-text>
-      <b-badge v-for="(tag, i) in tags" :key="i">{{ tag }}</b-badge>
-    </b-card>
+      <b-card
+        :title="`#${channelName}`"
+        tag="article"
+        class="mb-2"
+      >
+        <VideoPlayer :videoUrl="videoUrl" class="mb-2 video-player-thumbnail" :thumbnail="true"/>
+        <b-card-text>
+          <span class="current-video-name">Now playing</span> "{{ currentVideoName }}"
+        </b-card-text>
+        <WatcherCount :count="watcherCount" />
+        <TagList :tags="tags" />
+      </b-card>
+    </router-link>
   </div>
 </template>
 
 <script>
-import numeral from 'numeral';
+import VideoPlayer from './VideoPlayer';
+import WatcherCount from './WatcherCount';
+import TagList from './TagList';
 
 export default {
+  components: { VideoPlayer, WatcherCount, TagList },
   name: 'ChannelCard',
   props: {
-    name: {
+    channelName: {
       type: String,
+      required: true
+    },
+    channelId: {
+      type: Number,
       required: true
     },
     currentVideoName: {
@@ -41,12 +51,19 @@ export default {
     watcherCount: {
       type: Number,
       required: true
+    },
+    videoUrl: {
+      type: String,
+      required: true
+    },
+    key: {
+      type: Number,
+      required: true
     }
   },
   data() {
     return {
-      imageNum: Math.floor(Math.random() * 100) + 1,
-      watcherCountFormatted: numeral(this.watcherCount).format('0a')
+      imageNum: Math.floor(Math.random() * 100) + 1
     }
   }
 }
@@ -54,6 +71,20 @@ export default {
 
 <style scoped>
 .channel-card {
-  max-width: 20rem;
+  width: 18rem;
+}
+
+.current-video-name {
+  color: #007bff;
+}
+
+.router-link {
+  text-decoration: initial;
+  color: initial;
+}
+
+.video-player-thumbnail {
+  width: 100%;
+  height: 160px;
 }
 </style>

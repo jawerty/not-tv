@@ -1,3 +1,6 @@
+process.env.TZ = 'America/New_York';
+
+const moment = require('moment');
 const DB = require('../lib/db');
 const ChannelProgramming = require('../lib/channel-programming');
 
@@ -35,16 +38,18 @@ function saveTimeSlots(timeSlots, timeSeriesId) {
 	db.setTable('channel_timeslot');
 	return new Promise((resolve, reject) => {
 		const insertPromises = [];
-		timeSlots.forEach((timeSlot, i) => {
+		for (let i = 0; i < timeSlots.length; i++) {
+			const timeSlot = timeSlots[i];
 			insertPromises.push(db.insertRow({
 				'channel_id': timeSlot.channel_id,
 				'channel_video_id': timeSlot.id,
-				'video_start_ts': timeSlot.video_start_ts,
+				'video_start_ts': moment(timeSlot.video_start_ts).format("YYYY-MM-DD HH:mm:ss"),
 				'time_series_id': timeSeriesId+(i+1),
 			}).catch((err) => {
 				console.log("Insert error", err);
 			}));
-		});
+		};
+
 		Promise.all(insertPromises).then((rowIds) => {
 			console.log(`-- Inserted ${rowIds.length} rows into channel_timeslot --`);
 			resolve();
@@ -55,12 +60,16 @@ function saveTimeSlots(timeSlots, timeSeriesId) {
 	});
 }
 
-const args = process.argv.slice(2);
-if (args.length == 2) {
-	generateProgramming(args[0], args[1], () => {
-		console.log("-- Programming generated --");
-		process.exit(0);
-	});	
+if (require.main === module) {
+	const args = process.argv.slice(2);
+	if (args.length == 2) {
+		generateProgramming(args[0], args[1], () => {
+			console.log("-- Programming generated --");
+			process.exit(0);
+		});	
+	} else {
+		console.log("Argument error: generate-programming.js <channelId> <timebox>");
+	}
 } else {
-	console.log("Argument error: generate-programming.js <channelId> <timebox>");
+	module.exports = generateProgramming;
 }

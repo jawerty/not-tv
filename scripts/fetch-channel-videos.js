@@ -13,24 +13,32 @@ const VideoRater = require('../lib/video-rater');
 
 let db, videoRater, videoFetcher, cookieStore;
 
-(async () => {
+async function main(channelId) {
 	db = new DB();
 	cookieStore = new CookieStore();
 	videoRater = new VideoRater();
 	videoFetcher = await new VideoFetcher();
 
-	const args = process.argv.slice(2);
-	if (args.length >= 1) {
-		if (args.indexOf('--cookie-reset') > -1) {
-			await cookieStore.generateCookies();
+	if (require.main === module) {
+		const args = process.argv.slice(2);
+		if (args.length >= 1) {
+			if (args.indexOf('--cookie-reset') > -1) {
+				await cookieStore.generateCookies();
+			}
+			fetchChannelVideos(args[0], () => {
+				process.exit(0);
+			});	
+		} else {
+			console.log("Argument error: fetch-channel-videos.js <channelId>");
 		}
-		fetchChannelVideos(args[0], () => {
-			process.exit(0);
-		});	
 	} else {
-		console.log("Argument error: fetch-channel-videos.js <channelId>");
+		return new Promise((resolve, reject) => {
+			fetchChannelVideos(channelId, () => {
+				resolve(true)
+			});	
+		});
 	}
-})();
+}
 
 async function fetchChannelVideos(channelId, cb) {
 	db.setTable('channel');
@@ -149,3 +157,8 @@ function chunkArray(array, chunks) {
 	return newArray;
 }
 
+if (require.main === module) {
+	main();
+} else {
+	module.exports = main;
+}

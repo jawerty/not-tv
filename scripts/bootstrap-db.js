@@ -29,7 +29,7 @@ async function createTables(cb) {
 	await db.createTable('channel_timeslot', {
 		'channel_id': { type: 'unsigned_integer', isForeign: true, foreignKey: 'channel.id' },
 		'channel_video_id': { type: 'unsigned_integer', isForeign: true, foreignKey: 'channel_video.id' },
-		'video_start_ts': { type: 'string' },
+		'video_start_ts': { type: 'timestamp' },
 		'time_series_id': { type: 'integer' }
 	}).then((info) => {
 		console.log('channel_timeslot table created')

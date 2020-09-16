@@ -1,19 +1,19 @@
 <template>
-  <div id="app">
-    <Home msg="nottv"/>
+  <div class="app">
+    <Header />
+    <router-view />
+    <Footer />
   </div>
 </template>
 
 <script>
-import Home from './components/Home.vue'
-
+import Header from './components/Header';
+import Footer from './components/Footer';
 export default {
-  name: 'App',
-  components: {
-    Home
-  }
+  components: { Header, Footer },
+  name: 'App'
 }
 </script>
 
-<style>
+<style scoped>
 </style>
